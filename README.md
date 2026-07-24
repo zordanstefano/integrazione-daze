@@ -1,10 +1,19 @@
 # Unofficial Daze Integration for Home Assistant
 
-Custom integration per le wallbox **Daze** (Dazebox Home / Home T) che usa l'API cloud
-ufficiale `webapi.dazeservice.com`, la stessa dell'app Daze.
+Custom integration per le wallbox **Daze** (Dazebox Home / Home T) che comunica con i servizi
+cloud di Daze (`webapi.dazeservice.com`), gli stessi usati dall'app Daze.
 
 > Esiste anche un protocollo **BLE locale**, ma la relativa integrazione è **accantonata**:
 > richiederebbe un ESP32 come Bluetooth proxy e la via cloud sta dando ottimi risultati.
+
+## Stato del progetto (Beta)
+
+Questa è la prima versione pubblica dell'integrazione. È stata sviluppata e testata su hardware
+reale, ma il tempo di utilizzo è ancora limitato. Al momento è stata verificata esclusivamente
+con una Daze Home T e la compatibilità con altri modelli Daze non è ancora stata confermata.
+
+Il progetto è quindi da considerarsi **Beta**. Sono benvenute segnalazioni di bug, suggerimenti,
+test su altri modelli e contributi della community.
 
 ## Limite di ricarica: solo gli step della scala Daze
 
@@ -54,15 +63,15 @@ La scala vive in `const.py` (`CHARGING_POWER_STEPS`).
 
 ## Icona dell'integrazione
 
-`brand/icon.png` è il logo Daze, incluso nell'integrazione. Da **HA 2026.3** le custom
-integration possono fornire i propri brand localmente in una cartella `brand/` — prima l'unica
-via era una PR al repository [home-assistant/brands](https://github.com/home-assistant/brands),
-e senza quella la UI mostrava "Icon not available". Nessuna modifica al manifest, i file locali
-hanno la precedenza sul CDN. Nomi accettati: `icon.png`, `logo.png`, più le varianti
-`dark_*` e `*@2x`.
+`brand/icon.png` è un'icona **originale** (una wallbox stilizzata con un fulmine), non il logo
+Daze: questo progetto non è affiliato a Daze e non ne ridistribuisce il marchio. Da **HA 2026.3**
+le custom integration possono fornire i propri brand localmente in una cartella `brand/` — prima
+l'unica via era una PR al repository
+[home-assistant/brands](https://github.com/home-assistant/brands), e senza quella la UI mostrava
+"Icon not available". Nessuna modifica al manifest, i file locali hanno la precedenza sul CDN.
+Nomi accettati: `icon.png`, `logo.png`, più le varianti `dark_*` e `*@2x`.
 
-Il file è l'icona ufficiale del sito daze.eu (180×180): marchio di Daze, incluso solo per
-identificare il dispositivo nella UI.
+L'icona è fornita in `icon.png` (256×256) e `icon@2x.png` (512×512).
 
 ## Requisiti
 
@@ -119,7 +128,18 @@ runtime e non viene mai stampata. Con `--test-command` puoi provare anche start/
 
 ## Come è stata realizzata
 
-L'API non è pubblica: è stata ricostruita analizzando staticamente l'app Android ufficiale
-(`com.daze.ble`, .NET MAUI).
+L'integrazione comunica con gli stessi servizi cloud usati dall'app Daze. L'API non è
+documentata pubblicamente: l'integrazione ne implementa un client compatibile.
 
-Non affiliata a Daze. Usa a tuo rischio.
+## Avvertenze
+
+Questa integrazione è distribuita gratuitamente, senza alcuna garanzia. Prima di utilizzarla,
+assicurati di comprenderne il funzionamento e verifica che la configurazione sia adatta al tuo
+impianto. L'autore non è affiliato a Daze e non fornisce alcuna garanzia sul funzionamento
+continuo o sulla compatibilità futura con i servizi Daze.
+
+L'uso è a tuo esclusivo rischio: l'autore non è responsabile per eventuali danni a dispositivi,
+impianti, veicoli o cose derivanti dall'uso dell'integrazione.
+
+«Daze» e «Dazebox» sono marchi dei rispettivi titolari. Questo progetto non è affiliato,
+associato, autorizzato né approvato da Daze.
