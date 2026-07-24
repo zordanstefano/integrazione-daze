@@ -1,4 +1,4 @@
-# Daze Wallbox — integrazione Home Assistant (Cloud)
+# Unofficial Daze Integration for Home Assistant
 
 Custom integration per le wallbox **Daze** (Dazebox Home / Home T) che usa l'API cloud
 ufficiale `webapi.dazeservice.com`, la stessa dell'app Daze.
@@ -76,7 +76,7 @@ identificare il dispositivo nella UI.
 
 **HACS:** aggiungi questo repository come *custom repository* di tipo *Integration*.
 
-Poi: *Impostazioni → Dispositivi e servizi → Aggiungi integrazione → Daze Wallbox (Cloud)*.
+Poi: *Impostazioni → Dispositivi e servizi → Aggiungi integrazione → Daze (Unofficial)*.
 Inserisci email e password Daze; se l'account ha più wallbox potrai sceglierla.
 
 ## Opzioni

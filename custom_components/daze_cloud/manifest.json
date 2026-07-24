@@ -1,6 +1,6 @@
 {
   "domain": "daze_cloud",
-  "name": "Daze Wallbox (Cloud)",
+  "name": "Daze (Unofficial)",
   "codeowners": ["@zordanstefano"],
   "config_flow": true,
   "documentation": "https://github.com/zordanstefano/integrazione-daze",
