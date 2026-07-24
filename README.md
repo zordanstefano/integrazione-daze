@@ -3,9 +3,6 @@
 Custom integration per le wallbox **Daze** (Dazebox Home / Home T) che comunica con i servizi
 cloud di Daze (`webapi.dazeservice.com`), gli stessi usati dall'app Daze.
 
-> Esiste anche un protocollo **BLE locale**, ma la relativa integrazione è **accantonata**:
-> richiederebbe un ESP32 come Bluetooth proxy e la via cloud sta dando ottimi risultati.
-
 ## Stato del progetto (Beta)
 
 Questa è la prima versione pubblica dell'integrazione. È stata sviluppata e testata su hardware
@@ -98,7 +95,7 @@ Dalla scheda dell'integrazione, *Configura*:
 ## Note e limiti
 
 - **Dipende dal cloud Daze.** Se i server Daze o la tua connessione sono giù, l'integrazione
-  non funziona. È il compromesso di questa versione; la variante BLE sarà locale.
+  non funziona: la wallbox si controlla solo tramite i servizi cloud di Daze.
 - **Ogni aggiornamento fa 2 chiamate** (`remoteInfo` del connettore + contratto EVSE), perché
   la corrente impostata e le correnti di rete vivono solo sul secondo endpoint.
 - **Corrente e potenza sono la stessa impostazione.** La wallbox si comanda solo in corrente
