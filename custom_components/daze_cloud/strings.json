@@ -1,0 +1,141 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Account Daze",
+        "description": "Inserisci le credenziali che usi nell'app Daze.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      },
+      "select_evse": {
+        "title": "Scegli la wallbox",
+        "data": {
+          "evse_serial": "Wallbox"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Autenticazione scaduta",
+        "description": "Reinserisci la password per l'account {username}.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Email o password non validi.",
+      "cannot_connect": "Impossibile contattare il servizio Daze.",
+      "no_evses": "Nessuna wallbox trovata su questo account."
+    },
+    "abort": {
+      "already_configured": "Questa wallbox e' gia' configurata.",
+      "reauth_successful": "Riautenticazione completata."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni Daze",
+        "data": {
+          "scan_interval": "Intervallo di aggiornamento (secondi)",
+          "min_current": "Corrente minima (A)",
+          "max_current": "Corrente massima (A)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Potenza"
+      },
+      "energy_session": {
+        "name": "Energia sessione"
+      },
+      "total_energy": {
+        "name": "Energia totale"
+      },
+      "current_l1": {
+        "name": "Corrente di carica L1"
+      },
+      "current_l2": {
+        "name": "Corrente di carica L2"
+      },
+      "current_l3": {
+        "name": "Corrente di carica L3"
+      },
+      "voltage_l1": {
+        "name": "Tensione di carica L1"
+      },
+      "voltage_l2": {
+        "name": "Tensione di carica L2"
+      },
+      "voltage_l3": {
+        "name": "Tensione di carica L3"
+      },
+      "charge_time": {
+        "name": "Durata sessione"
+      },
+      "status": {
+        "name": "Stato",
+        "state": {
+          "unknown": "Sconosciuto",
+          "standby": "In attesa",
+          "waiting_authorization": "Attesa autorizzazione",
+          "charging": "In ricarica",
+          "error": "Errore",
+          "authorized": "Autorizzato",
+          "waiting_power": "Attesa potenza",
+          "preparing": "Preparazione",
+          "unavailable": "Non disponibile",
+          "finishing": "Completamento",
+          "reserved": "Riservato",
+          "scheduled_pause": "Pausa programmata",
+          "smart_tariff_pause": "Pausa tariffa smart"
+        }
+      },
+      "grid_current_l1": {
+        "name": "Corrente rete L1"
+      },
+      "grid_current_l2": {
+        "name": "Corrente rete L2"
+      },
+      "grid_current_l3": {
+        "name": "Corrente rete L3"
+      },
+      "max_current": {
+        "name": "Corrente massima"
+      }
+    },
+    "binary_sensor": {
+      "vehicle_connected": {
+        "name": "Veicolo collegato"
+      },
+      "charging": {
+        "name": "In ricarica"
+      },
+      "problem": {
+        "name": "Anomalia"
+      }
+    },
+    "switch": {
+      "charging": {
+        "name": "Ricarica"
+      },
+      "autostart": {
+        "name": "Avvio automatico"
+      }
+    },
+    "number": {
+      "max_power": {
+        "name": "Potenza massima di carica"
+      }
+    },
+    "select": {
+      "max_power": {
+        "name": "Potenza massima di carica"
+      }
+    }
+  }
+}

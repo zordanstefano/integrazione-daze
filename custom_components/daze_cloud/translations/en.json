@@ -1,0 +1,141 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Daze account",
+        "description": "Enter the credentials you use in the Daze app.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      },
+      "select_evse": {
+        "title": "Choose the wallbox",
+        "data": {
+          "evse_serial": "Wallbox"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Authentication expired",
+        "description": "Re-enter the password for account {username}.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password.",
+      "cannot_connect": "Cannot reach the Daze service.",
+      "no_evses": "No wallbox found on this account."
+    },
+    "abort": {
+      "already_configured": "This wallbox is already configured.",
+      "reauth_successful": "Re-authentication completed."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Daze options",
+        "data": {
+          "scan_interval": "Update interval (seconds)",
+          "min_current": "Minimum current (A)",
+          "max_current": "Maximum current (A)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Power"
+      },
+      "energy_session": {
+        "name": "Session energy"
+      },
+      "total_energy": {
+        "name": "Total energy"
+      },
+      "current_l1": {
+        "name": "Charging current L1"
+      },
+      "current_l2": {
+        "name": "Charging current L2"
+      },
+      "current_l3": {
+        "name": "Charging current L3"
+      },
+      "voltage_l1": {
+        "name": "Charging voltage L1"
+      },
+      "voltage_l2": {
+        "name": "Charging voltage L2"
+      },
+      "voltage_l3": {
+        "name": "Charging voltage L3"
+      },
+      "charge_time": {
+        "name": "Session duration"
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "unknown": "Unknown",
+          "standby": "Standby",
+          "waiting_authorization": "Waiting authorization",
+          "charging": "Charging",
+          "error": "Error",
+          "authorized": "Authorized",
+          "waiting_power": "Waiting power",
+          "preparing": "Preparing",
+          "unavailable": "Unavailable",
+          "finishing": "Finishing",
+          "reserved": "Reserved",
+          "scheduled_pause": "Scheduled pause",
+          "smart_tariff_pause": "Smart tariff pause"
+        }
+      },
+      "grid_current_l1": {
+        "name": "Grid current L1"
+      },
+      "grid_current_l2": {
+        "name": "Grid current L2"
+      },
+      "grid_current_l3": {
+        "name": "Grid current L3"
+      },
+      "max_current": {
+        "name": "Maximum current"
+      }
+    },
+    "binary_sensor": {
+      "vehicle_connected": {
+        "name": "Vehicle connected"
+      },
+      "charging": {
+        "name": "Charging"
+      },
+      "problem": {
+        "name": "Problem"
+      }
+    },
+    "switch": {
+      "charging": {
+        "name": "Charging"
+      },
+      "autostart": {
+        "name": "Autostart"
+      }
+    },
+    "number": {
+      "max_power": {
+        "name": "Maximum charging power"
+      }
+    },
+    "select": {
+      "max_power": {
+        "name": "Maximum charging power"
+      }
+    }
+  }
+}

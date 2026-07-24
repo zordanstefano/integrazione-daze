@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+
+# Appunti di sviluppo interni: non pubblicati (contengono dati personali/RE)
+CONTESTO.md
+REVERSE-ENGINEERING.md
