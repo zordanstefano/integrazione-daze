@@ -5,6 +5,9 @@ Unofficial Home Assistant integration for Daze wallboxes.
 The integration connects to the Daze Cloud services and allows you to monitor and control your
 wallbox directly from Home Assistant.
 
+This integration is intended exclusively to allow users to access and control their own Daze
+wallboxes through Home Assistant.
+
 > [!IMPORTANT]
 > This project is not affiliated with, endorsed, authorized or supported by Daze.
 
