@@ -505,9 +505,18 @@ class DazeCloudClient:
             return self._total_energy_wh
 
         if isinstance(data, list) and data:
-            value = _to_float(_pick(data[0], "energyWh"))
-            if value is not None:
-                self._total_energy_wh = value
+            # L'endpoint dovrebbe restituire un solo bucket (l'intero periodo), ma a
+            # volte lo spezza in piu' intervalli: il totale e' la SOMMA di tutti, non
+            # il primo. Prendere data[0] darebbe un bucket parziale - di notte, senza
+            # ricarica, vale 0 - e farebbe crollare il sensore a 0.
+            buckets = [_to_float(_pick(bucket, "energyWh")) for bucket in data]
+            total = sum(value for value in buckets if value is not None)
+            # Totale a vita: puo' solo crescere. Scartiamo i cali, che sono glitch
+            # dell'aggregato cloud: senza questa guardia un singolo 0 verrebbe letto
+            # da HA come reset del contatore (TOTAL_INCREASING) e sporcherebbe le
+            # statistiche della dashboard Energia.
+            if self._total_energy_wh is None or total >= self._total_energy_wh:
+                self._total_energy_wh = total
                 self._total_energy_at = now
         return self._total_energy_wh
 
