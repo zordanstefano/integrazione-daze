@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Final
 
 from homeassistant.components.sensor import (
@@ -58,11 +59,35 @@ def _session_duration(seconds: float | None) -> str | None:
     return _format_duration(seconds)
 
 
+def _last_session_energy(state: DazeSocketState) -> float | None:
+    """Energia (kWh) dell'ultima sessione conclusa, se nota."""
+    last = state.last_session
+    return None if last is None else _scale(last.energy_wh, 1000)
+
+
+def _last_session_duration(state: DazeSocketState) -> str | None:
+    """Durata di carica dell'ultima sessione conclusa, come testo leggibile."""
+    last = state.last_session
+    return None if last is None else _format_duration(last.charge_seconds)
+
+
+def _last_session_start(state: DazeSocketState) -> datetime | None:
+    """Istante di inizio dell'ultima sessione conclusa."""
+    last = state.last_session
+    return None if last is None else last.start
+
+
+def _last_session_end(state: DazeSocketState) -> datetime | None:
+    """Istante di fine (scollegamento) dell'ultima sessione conclusa."""
+    last = state.last_session
+    return None if last is None else last.end
+
+
 @dataclass(frozen=True, kw_only=True)
 class DazeSensorDescription(SensorEntityDescription):
     """Descrizione di un sensore Daze con la funzione di lettura."""
 
-    value_fn: Callable[[DazeSocketState], float | str | None]
+    value_fn: Callable[[DazeSocketState], float | str | datetime | None]
 
 
 SENSORS: tuple[DazeSensorDescription, ...] = (
@@ -208,6 +233,39 @@ SENSORS: tuple[DazeSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
         value_fn=lambda s: s.max_current_a,
     ),
+    # --- Ultima sessione conclusa (snapshot lato integrazione) -------------
+    # Il cloud Daze non espone uno storico sessioni: e' il coordinator a tenere
+    # l'ultima sessione conclusa (vedi coordinator.py). Per le statistiche nel
+    # tempo si usa il recorder / dashboard Energia sul sensore energia totale.
+    #
+    # Energia una tantum, non un contatore: device_class ENERGY ma senza
+    # state_class, cosi' non finisce tra le sorgenti della dashboard Energia
+    # (quella e' `total_energy`).
+    DazeSensorDescription(
+        key="last_session_energy",
+        translation_key="last_session_energy",
+        device_class=SensorDeviceClass.ENERGY,
+        native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+        suggested_display_precision=3,
+        value_fn=_last_session_energy,
+    ),
+    DazeSensorDescription(
+        key="last_session_duration",
+        translation_key="last_session_duration",
+        value_fn=_last_session_duration,
+    ),
+    DazeSensorDescription(
+        key="last_session_start",
+        translation_key="last_session_start",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        value_fn=_last_session_start,
+    ),
+    DazeSensorDescription(
+        key="last_session_end",
+        translation_key="last_session_end",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        value_fn=_last_session_end,
+    ),
 )
 
 
@@ -232,7 +290,7 @@ class DazeSensor(DazeEntity, SensorEntity):
         self.entity_description = description
 
     @property
-    def native_value(self) -> float | str | None:
+    def native_value(self) -> float | str | datetime | None:
         """Valore corrente del sensore."""
         if self._state is None:
             return None

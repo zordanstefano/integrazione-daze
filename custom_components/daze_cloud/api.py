@@ -124,6 +124,23 @@ class DazeEvse:
 
 
 @dataclass(slots=True)
+class DazeLastSession:
+    """Istantanea dell'ultima sessione conclusa.
+
+    Per Daze una "sessione" e' l'intero periodo con il cavo collegato, non la
+    singola carica: energia e durata sono cumulate su quel periodo, e la sessione
+    si chiude solo allo scollegamento del cavo. Popolata dal coordinator, che
+    osserva l'apertura/chiusura del `chargeSession` (vedi coordinator.py).
+    """
+
+    session_id: int | None = None
+    energy_wh: float | None = None
+    charge_seconds: float | None = None
+    start: datetime | None = None
+    end: datetime | None = None
+
+
+@dataclass(slots=True)
 class DazeSocketState:
     """Stato della wallbox: remoteInfo del connettore + configurazione dell'EVSE."""
 
@@ -146,6 +163,10 @@ class DazeSocketState:
     voltage_l2: float | None = None
     voltage_l3: float | None = None
     charge_seconds: float | None = None
+    # Inizio della sessione in corso (startTime del chargeSession).
+    session_start: datetime | None = None
+    # Ultima sessione conclusa, tracciata dal coordinator.
+    last_session: DazeLastSession | None = None
     # Dati letti dal contratto EVSE (non presenti in remoteInfo).
     max_current_a: float | None = None
     grid_current_l1: float | None = None
@@ -158,6 +179,20 @@ class DazeSocketState:
     software_version: str | None = None
     raw: dict[str, Any] = field(default_factory=dict)
     raw_evse: dict[str, Any] = field(default_factory=dict)
+
+
+def _parse_datetime(value: Any) -> datetime | None:
+    """Converte un timestamp ISO 8601 (con o senza 'Z') in datetime aware."""
+    if not isinstance(value, str) or not value:
+        return None
+    text = value.strip()
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
 
 
 def _parse_duration(value: Any) -> float | None:
@@ -516,6 +551,7 @@ class DazeCloudClient:
             voltage_l2=_to_float(_pick(session, "lastACVoltageL2")),
             voltage_l3=_to_float(_pick(session, "lastACVoltageL3")),
             charge_seconds=0.0 if idle else _parse_duration(_pick(session, "chargeTime")),
+            session_start=_parse_datetime(_pick(session, "startTime")),
             max_current_a=_milliamps_to_amps(
                 _pick(evse, "maxExternalChargingCurrentInMilliAmps")
             ),

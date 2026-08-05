@@ -105,6 +105,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: DazeConfigEntry) -> bool
         entry.data[CONF_SOCKET_SERIAL],
         scan_interval,
     )
+    await coordinator.async_load_last_session()
     await coordinator.async_config_entry_first_refresh()
 
     entry.runtime_data = DazeRuntimeData(

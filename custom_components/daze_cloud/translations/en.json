@@ -106,6 +106,18 @@
       },
       "max_current": {
         "name": "Maximum current"
+      },
+      "last_session_energy": {
+        "name": "Last session energy"
+      },
+      "last_session_duration": {
+        "name": "Last session duration"
+      },
+      "last_session_start": {
+        "name": "Last session start"
+      },
+      "last_session_end": {
+        "name": "Last session end"
       }
     },
     "binary_sensor": {
