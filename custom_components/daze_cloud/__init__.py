@@ -117,10 +117,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: DazeConfigEntry) -> bool
     )
 
     _async_cleanup_removed_entities(hass, entry)
-    _async_fix_doubled_entity_ids(hass, entry)
     _async_migrate_units(hass, entry)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Dopo la creazione delle entita': quelle aggiunte a un device gia' esistente
+    # nascono con l'entity_id raddoppiato, e correggerle qui le sistema nello
+    # stesso riavvio (girando prima del setup servivano due riavvii).
+    _async_fix_doubled_entity_ids(hass, entry)
+
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
 
@@ -152,7 +157,9 @@ def _async_fix_doubled_entity_ids(
     `<dev>_...`, senza toccare l'unique_id (storico e personalizzazioni restano).
 
     Scorre tutte le entita' del config entry, non un elenco fisso: cosi' anche le
-    entita' aggiunte in futuro si auto-correggono al riavvio successivo. Agisce
+    entita' aggiunte in futuro si auto-correggono. Viene chiamata **dopo** il
+    setup delle piattaforme, quindi vede anche le entita' appena create e le
+    sistema nello stesso riavvio, non al successivo. Agisce
     solo sul prefisso davvero raddoppiato, cosi' non tocca id gia' rinominati
     dall'utente; la rinomina e' saltata se il nuovo id e' gia' occupato.
     Idempotente e no-op sulle installazioni pulite.
