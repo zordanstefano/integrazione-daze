@@ -38,6 +38,7 @@ Bug reports, testing on additional models, suggestions and pull requests are wel
 - Real-time charging power
 - Session energy
 - Total delivered energy
+- Last completed session (energy, duration, start/end)
 - Per-phase voltage and current
 - Grid current monitoring
 - Vehicle connection detection
@@ -112,6 +113,9 @@ The integration exposes:
 - Grid current (L1/L2/L3)
 - Charging current (L1/L2/L3)
 - Grid voltage (L1/L2/L3)
+- Last session energy
+- Last session duration
+- Last session start / end
 
 ### Binary Sensors
 
@@ -145,6 +149,28 @@ Two entities are available:
 - **Number:** slider that automatically snaps to the nearest valid value.
 
 This guarantees that Home Assistant and the Daze app always remain synchronized.
+
+---
+
+## Charging sessions
+
+The Daze cloud does not expose a session history, so the integration keeps track of the **last
+completed session** on its own.
+
+A Daze "session" spans the whole period the cable stays plugged in (energy and duration are
+accumulated over that period), and it ends when the cable is unplugged. When that happens the
+integration records the session as the *last session* and exposes its energy, duration, start
+and end.
+
+Notes:
+
+- The last-session sensors stay empty until the **first session ends** (cable unplugged); an open
+  session is not shown as "last" yet.
+- Sessions that only contain the connection handshake (no energy delivered) are ignored, so they
+  do not overwrite the last real session.
+- The last session is persisted, so it survives Home Assistant restarts.
+- For long-term statistics (per day/week/month) use the Home Assistant recorder / Energy
+  Dashboard on the **Total delivered energy** sensor.
 
 ---
 
